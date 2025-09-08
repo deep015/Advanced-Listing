@@ -1,5 +1,6 @@
-import useStore from '../store'
-import { FaTimes } from 'react-icons/fa'
+import React from 'react';
+import useStore from '../store';
+import { FaTimes } from 'react-icons/fa';
 
 const Modal = () => {
   const {
@@ -11,67 +12,61 @@ const Modal = () => {
     setModalName,
     setModalEmoji,
     closeListModal,
-    handleSaveModal,
     closeWorkspaceModal,
-  } = useStore()
+    handleSaveModal,
+  } = useStore();
+
+  const isOpen = isListModalOpen || isWorkspaceModalOpen;
+
+  if (!isOpen) return null;
 
   const handleClose = () => {
-    if (modalType === "List") {
-      closeListModal()
-    } else if (modalType === "Workspace") {
-      closeWorkspaceModal()
-    }
-  }
-
-  const handleSave = () => {
-    handleSaveModal()
-  }
-
-  if (!isListModalOpen && !isWorkspaceModalOpen) {
-    return null
-  }
+    if (modalType === "List") closeListModal();
+    else if (modalType === "Workspace") closeWorkspaceModal();
+  };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg w-80 shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 sm:p-8 animate-fadeIn">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">
-            {`Create New ${modalType}`}
-          </h2>
-          <button onClick={handleClose} className="text-gray-600 hover:text-gray-900">
-            <FaTimes />
+          <h2 className="text-xl sm:text-2xl font-bold">{`Create New ${modalType}`}</h2>
+          <button
+            onClick={handleClose}
+            className="text-gray-600 hover:text-gray-900 transition"
+          >
+            <FaTimes size={20} />
           </button>
         </div>
 
-        {/* Name input */}
+        {/* Name Input */}
         <input
           type="text"
           value={modalName}
           onChange={(e) => setModalName(e.target.value)}
           placeholder={`Enter ${modalType} name`}
-          className="border border-gray-300 p-2 rounded-lg w-full mb-3 focus:outline-none focus:ring-2 focus:ring-black"
+          className="w-full border border-gray-300 rounded-lg p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
         />
 
-        {/* Emoji input */}
+        {/* Emoji Input */}
         <input
           type="text"
           value={modalEmoji}
           onChange={(e) => setModalEmoji(e.target.value)}
           placeholder="Enter emoji (optional)"
-          className="border border-gray-300 p-2 rounded-lg w-full mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+          className="w-full border border-gray-300 rounded-lg p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
         />
 
-        {/* Save button */}
+        {/* Save Button */}
         <button
-          onClick={handleSave}
-          className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
+          onClick={handleSaveModal}
+          className="w-full bg-rose-500 text-white py-2 rounded-lg hover:bg-rose-600 transition font-medium"
         >
           Save
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

@@ -1,94 +1,38 @@
-import React from "react";
+
 import Sidebar from "./components/Sidebar";
 import Mainarea from "./components/Mainarea";
-import useStore from "./store";
-import { MdMoreVert } from "react-icons/md";
+import Todos from "./components/Todos";
 import Modal from "./components/Modal";
+import Header from "./components/Header";
+import Content from "./components/Content";
 
 const App = () => {
-  const {
-    todos,
-    editIndex,
-    setEditIndex,
-    setEditText,
-    editText,
-    dropdownIndex,
-    handleEdit,
-    handleUpdate,
-    handleDropdownClick,
-    deleteTodo,
-  } = useStore();
-
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50">
+      {/* Sidebar */}
       <Sidebar />
-      <div className="flex-1 p-6">
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        {/* Header */}
+        <Header />
+
+        {/* Input / Add Todo Section */}
         <Mainarea />
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-4 ml-[2rem]">Todo List</h2>
-          <ul className="list-disc pl-5">
-            {todos.map((todo, index) => (
-              <li key={index} className="mb-2 ml-[2rem]">
-                {editIndex === index ? (
-                  <div className="flex items-center">
-                    <input
-                      type="text"
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-lg mr-2"
-                    />
-                    <button
-                      onClick={() => handleUpdate(index)}
-                      className="bg-green-500 text-white px-2 py-1 rounded-lg mr-2"
-                    >
-                      Update
-                    </button>
-                    <button
-                      onClick={() => setEditIndex(null)}
-                      className="bg-gray-500 text-white px-2 py-1 rounded-lg"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <div className="relative flex justify-between items-center">
-                    <div>
-                      <span className="mr-4">
-                        <strong>{todo.text}</strong> (List: {todo.list}) (Workspace:{" "}
-                        {todo.workspace})
-                      </span>
-                    </div>
-                    <div className="flex items-center ">
-                      {/* ✅ use onClick instead of onChange */}
-                      <MdMoreVert
-                        className="cursor-pointer"
-                        size={24}
-                        onClick={() => handleDropdownClick(index)}
-                      />
-                      {dropdownIndex === index && (
-                        <div className="absolute right-0 mt-2 bg-white border rounded shadow-lg z-10">
-                          <button
-                            onClick={() => handleEdit(index)}
-                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                          >
-                            Update
-                          </button>
-                          <button
-                            onClick={() => deleteTodo(index)}
-                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
+
+        {/* Intro Content */}
+        <div className="p-4 sm:p-6 lg:p-8">
+          <Content />
+        </div>
+
+        {/* Todos List Section */}
+        <div className="p-4 sm:p-6 lg:p-8">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">Todo List</h2>
+          <Todos />
         </div>
       </div>
+
+      {/* Modal */}
       <Modal />
     </div>
   );
